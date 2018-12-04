@@ -1,12 +1,17 @@
 profiles:
-
-  prod:
+  dev:
     - docker-compose.yml
     - deploy
     - env
     - ports
 
-  dev:
+  local:
+    - docker-compose.yml
+    - postgres
+    - env
+    - ports
+
+  prod:
     - docker-compose.yml
     - deploy
     - env

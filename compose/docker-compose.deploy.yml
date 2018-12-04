@@ -1,25 +1,7 @@
 services:
     app:
-      deploy:
-        replicas: 1
-        placement:
-          constraints:
-            - node.role == worker
-          preferences:
-            - spread: node.id
-        resources:
-          limits:
-            memory: 256M
-          reservations:
-            memory: 256M
-            cpus: '0.1'
-        restart_policy:
-          condition: any
-          delay: 5s
-          max_attempts: 20
-          window: 120s
-
-    postgres:
+      networks:
+        - servicenet
       deploy:
         replicas: 1
         placement:
@@ -40,6 +22,8 @@ services:
           window: 120s
 
     worker:
+      networks:
+        - servicenet
       deploy:
         replicas: 1
         placement:
@@ -60,6 +44,18 @@ services:
           window: 120s
 
     service_proxy:
+      image: registry.osslabs.net/service-proxy:0.1.1
+      restart: always
+      labels:
+        com.openslate.service_ip: ${SERVICE_IP}/24
+      networks:
+        - hostnet
+      environment:
+        - SERVICE_IP
+        - SERVICE_PORT
+        - VAULT_ADDR
+        - VAULT_CERTIFICATE_PATH=/v1/secret/ssl/star.osslabs.net
+        - VAULT_TOKEN
       deploy:
         placement:
           constraints:
@@ -75,3 +71,16 @@ services:
           delay: 5s
           max_attempts: 20
           window: 120s
+
+
+networks:
+    hostnet:
+      external:
+        name: host
+
+    servicenet:
+      driver: overlay
+      ipam:
+        driver: default
+        config:
+          - subnet: ${DOCKER_SUBNET}
