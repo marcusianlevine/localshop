@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    zalando.org/aws-load-balancer-scheme: internal
+  labels:
+    app.kubernetes.io/name: ${CF_PROJECT}
+    app.kubernetes.io/component: ${KUBE_WEB_LABEL}
+  name: ${KUBE_WEB_LABEL}
+  namespace: ${CF_PROJECT}
+spec:
+  rules:
+  - host: ${INGRESS_HOST}
+    http:
+      paths:
+      - backend:
+          serviceName: ${KUBE_WEB_LABEL}
+          servicePort: http
+        path: /

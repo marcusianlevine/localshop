@@ -16,3 +16,8 @@ profiles:
     - deploy
     - env
     - ports
+
+rancher:
+  project: Ops
+  manifests:
+  - ./k8s/

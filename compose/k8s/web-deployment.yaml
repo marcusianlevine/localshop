@@ -1,0 +1,64 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ${KUBE_WEB_LABEL}
+  namespace: ${CF_PROJECT}
+  labels:
+    app.kubernetes.io/name: ${CF_PROJECT}
+    app.kubernetes.io/component: ${KUBE_WEB_LABEL}
+spec:
+  replicas: 2
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ${CF_PROJECT}
+        app.kubernetes.io/component: ${KUBE_WEB_LABEL}
+    spec:
+      imagePullSecrets:
+      - name: oss-registry
+      containers:
+      - name: ${KUBE_WEB_LABEL}
+        image: ${DOCKER_IMAGE}
+        imagePullPolicy: IfNotPresent
+        command:
+        - uwsgi
+        args:
+        - --http
+        - 0.0.0.0:8000
+        - --module
+        - localshop.wsgi
+        - --master
+        - --die-on-term
+        envFrom:
+        - secretRef:
+            name: ${CF_PROJECT}-auth
+        - secretRef:
+            name: ${CF_PROJECT}-config
+        ports:
+          - name: http
+            containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 5
+        resources:
+          requests:
+            cpu: 300m
+            memory: 256Mi
+          limits:
+            cpu: 100m
+            memory: 256Mi
+        volumeMounts:
+        - name: localshop-data
+          mountPath: /media
+      volumes:
+      - name: localshop-data
+        persistentVolumeClaim:
+          claimName: localshop-data
