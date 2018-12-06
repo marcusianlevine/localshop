@@ -50,10 +50,10 @@ spec:
           initialDelaySeconds: 5
         resources:
           requests:
-            cpu: 300m
+            cpu: 100m
             memory: 256Mi
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
         volumeMounts:
         - name: localshop-data

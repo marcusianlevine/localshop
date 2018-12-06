@@ -32,10 +32,10 @@ spec:
             name: ${CF_PROJECT}-config
         resources:
           requests:
-            cpu: 300m
+            cpu: 100m
             memory: 256Mi
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
         volumeMounts:
         - name: ${CF_PROJECT}-data
