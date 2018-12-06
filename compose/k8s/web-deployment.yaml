@@ -15,6 +15,9 @@ spec:
         app.kubernetes.io/name: ${CF_PROJECT}
         app.kubernetes.io/component: ${KUBE_WEB_LABEL}
     spec:
+      securityContext:
+        runAsUser: 999
+        fsGroup: 999
       imagePullSecrets:
       - name: oss-registry
       containers:
