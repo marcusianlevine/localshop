@@ -21,3 +21,7 @@ rancher:
   project: Ops
   manifests:
   - ./k8s/
+
+remotes:
+  dev:
+    backend: rancher
