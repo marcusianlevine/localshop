@@ -25,3 +25,5 @@ rancher:
 remotes:
   dev:
     backend: rancher
+  prod:
+    backend: rancher
