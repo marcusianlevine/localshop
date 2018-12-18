@@ -10,4 +10,6 @@ spec:
   resources:
     requests:
       storage: 100Gi
-  storageClassName: nfs-client
+  selector:
+    matchLabels:
+      mount: "localshop-data"
