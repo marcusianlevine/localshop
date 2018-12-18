@@ -20,7 +20,8 @@ profiles:
 rancher:
   project: Ops
   manifests:
-  - ./k8s/
+  - ./k8s/mandatory
+  - ./k8s/app
 
 remotes:
   dev:
