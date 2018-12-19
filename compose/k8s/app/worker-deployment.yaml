@@ -1,0 +1,54 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: ${CF_PROJECT}
+  labels:
+    app.kubernetes.io/name: ${CF_PROJECT}
+    app.kubernetes.io/component: worker
+spec:
+  {% if '${CF_ENV}' == 'prod' %}
+  replicas: 2
+  {% else %}
+  replicas: 0
+  {% endif %}
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ${CF_PROJECT}
+        app.kubernetes.io/component: worker
+    spec:
+      securityContext:
+        runAsUser: 999
+        fsGroup: 999
+      imagePullSecrets:
+      - name: oss-registry
+      containers:
+      - name: worker
+        image: ${DOCKER_IMAGE}
+        imagePullPolicy: IfNotPresent
+        command:
+        - localshop
+        args:
+        - celery
+        - worker
+        - -B
+        - -E
+        envFrom:
+        - secretRef:
+            name: ${CF_PROJECT}-config
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 300m
+            memory: 512Mi
+        volumeMounts:
+        - name: ${CF_PROJECT}-data
+          mountPath: /media
+      volumes:
+      - name: ${CF_PROJECT}-data
+        persistentVolumeClaim:
+          claimName: ${CF_PROJECT}-data

@@ -16,3 +16,15 @@ profiles:
     - deploy
     - env
     - ports
+
+rancher:
+  project: Ops
+  manifests:
+  - ./k8s/mandatory
+  - ./k8s/app
+
+remotes:
+  dev:
+    backend: rancher
+  prod:
+    backend: rancher
