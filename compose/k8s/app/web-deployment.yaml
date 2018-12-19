@@ -40,9 +40,6 @@ spec:
         - --log-sendfile
         - --single-interpreter
         - --catch-exceptions
-        - --harakiri=300
-        - --http-timeout=300
-        - --http-connect-timeout=300
         envFrom:
         - secretRef:
             name: ${CF_PROJECT}-auth
