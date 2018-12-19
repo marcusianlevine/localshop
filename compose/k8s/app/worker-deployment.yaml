@@ -7,7 +7,11 @@ metadata:
     app.kubernetes.io/name: ${CF_PROJECT}
     app.kubernetes.io/component: worker
 spec:
+  {% if '${CF_ENV}' == 'prod' %}
   replicas: 2
+  {% else %}
+  replicas: 0
+  {% endif %}
   minReadySeconds: 10
   template:
     metadata:
