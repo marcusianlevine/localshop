@@ -201,6 +201,8 @@ class Base(Settings):
         'localshop.apps.dashboard',
         'localshop.apps.packages',
         'localshop.apps.permissions',
+
+        'raven.contrib.django.raven_compat',
     ]
 
     # Auth settings
