@@ -201,6 +201,8 @@ class Base(Settings):
         'localshop.apps.dashboard',
         'localshop.apps.packages',
         'localshop.apps.permissions',
+
+        'raven.contrib.django.raven_compat',
     ]
 
     # Auth settings
@@ -295,4 +297,14 @@ class TestConfig(Base):
 
 
 class Localshop(FileSettings(os.path.join(DEFAULT_PATH, 'localshop.conf.py')), Base):
-    pass
+
+    # Sentry config
+    SENTRY_DSN = os.getenv('SENTRY_DSN')
+    SENTRY_ENVIRONMENT = os.getenv('SENTRY_ENVIRONMENT')
+    SENTRY_VERSION = os.environ.get('VERSION')
+
+    RAVEN_CONFIG = {
+        'dsn': SENTRY_DSN,
+        'environment': SENTRY_ENVIRONMENT,
+        'release': SENTRY_VERSION,
+    }

@@ -15,7 +15,8 @@ dj-email-url==0.0.4
 docutils==0.12
 gunicorn==19.1.1
 netaddr==0.7.12
-requests==2.12.3
+raven==6.10.0
+requests==2.14.2
 sqlparse==0.1.15
 whitenoise==1.0.6
 Versio==0.2.1
