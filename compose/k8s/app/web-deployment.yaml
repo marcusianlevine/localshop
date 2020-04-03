@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ${KUBE_WEB_LABEL}
@@ -8,6 +8,10 @@ metadata:
     app.kubernetes.io/component: ${KUBE_WEB_LABEL}
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ${CF_PROJECT}
+      app.kubernetes.io/component: ${KUBE_WEB_LABEL}
   minReadySeconds: 10
   template:
     metadata:
