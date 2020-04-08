@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: worker
@@ -12,6 +12,10 @@ spec:
   {% else %}
   replicas: 0
   {% endif %}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ${CF_PROJECT}
+      app.kubernetes.io/component: worker
   minReadySeconds: 10
   template:
     metadata:
