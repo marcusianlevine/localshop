@@ -19,5 +19,5 @@ spec:
   - timeo=600
   - retrans=2
   nfs:
-    server: prod-store-nfs-2
-    path: /srv/share/docker-pypi-web-data
+    server: prod-home-nfs
+    path: /srv/data/docker-pypi-web-data
